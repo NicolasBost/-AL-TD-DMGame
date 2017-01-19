@@ -1,4 +1,4 @@
-package pacman;
+package mygame;
 
 import java.awt.Canvas;
 import java.awt.Frame;
