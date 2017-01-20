@@ -7,14 +7,10 @@ import gameframework.core.CanvasDefaultImpl;
 import gameframework.core.Game;
 import gameframework.core.GameLevelDefaultImpl;
 import gameframework.core.GameUniverseDefaultImpl;
-import gameframework.core.GameUniverseViewPortDefaultImpl;
 import gameframework.moves_rules.MoveBlockerChecker;
 import gameframework.moves_rules.MoveBlockerCheckerDefaultImpl;
 import gameframework.moves_rules.OverlapProcessor;
 import gameframework.moves_rules.OverlapProcessorDefaultImpl;
-import pacman.entity.Jail;
-import pacman.entity.Pacgum;
-import pacman.entity.SuperPacgum;
 import pacman.entity.Wall;
 import pacman.rule.PacmanMoveBlockers;
 import pacman.rule.PacmanOverlapRules;
@@ -22,7 +18,6 @@ import pacman.rule.PacmanOverlapRules;
 public class GameLevelOne extends GameLevelDefaultImpl {
 	Canvas canvas;
 
-	// 0 : Pacgums; 1 : Walls; 2 : SuperPacgums; 3 : Doors; 4 : Jail; 5 : empty
 	// 0 : empty; 1 : NonMovable; 2: PlayerBase; 3: IABase
 	static int[][] tab = { 
 		  { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0 },
@@ -58,7 +53,6 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1 }};
 
 	public static final int SPRITE_SIZE = 16;
-	public static final int NUMBER_OF_GHOSTS = 5;
 
 	@Override
 	protected void init() {
