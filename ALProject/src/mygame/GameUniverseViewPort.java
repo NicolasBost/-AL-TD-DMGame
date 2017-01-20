@@ -1,4 +1,4 @@
-package pacman;
+package mygame;
 
 import java.awt.Canvas;
 
@@ -12,7 +12,7 @@ public class GameUniverseViewPort extends GameUniverseViewPortDefaultImpl {
 	}
 	
 	protected String backgroundImage() {
-		return "images/map2.png";
+		return "images/map_bg.png";
 	}
 
 }
