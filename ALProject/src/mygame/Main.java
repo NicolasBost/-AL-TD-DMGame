@@ -1,6 +1,7 @@
 package mygame;
 
 import gameframework.core.GameLevel;
+import mygame.level.GameLevelOne;
 
 import java.util.ArrayList;
 

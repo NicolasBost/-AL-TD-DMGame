@@ -1,4 +1,4 @@
-package mygame;
+package mygame.entity;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -12,15 +12,15 @@ import gameframework.core.Overlappable;
 import gameframework.core.SpriteManager;
 import gameframework.core.SpriteManagerDefaultImpl;
 
-public class Warrior extends GameMovable implements Drawable, GameEntity, Overlappable {
+public class HorseMan extends GameMovable implements Drawable, GameEntity, Overlappable {
 
 	protected final SpriteManager spriteManager;
 	public static final int RENDERING_SIZE = 16; //taille finale
 	protected boolean movable = true;
 	
-	public Warrior(Canvas defaultCanvas) {
-		spriteManager = new SpriteManagerDefaultImpl("images/warrior.png",
-				defaultCanvas, RENDERING_SIZE, 5); //source, defautCanvas, | , nbSpriteParLigne
+	public HorseMan(Canvas defaultCanvas) {
+		spriteManager = new SpriteManagerDefaultImpl("images/horseman.png",
+				defaultCanvas, RENDERING_SIZE, 4); //source, defautCanvas, | , nbSpriteParLigne
 		spriteManager.setTypes(
 				//
 				"right", "left", "up",

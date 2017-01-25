@@ -1,27 +1,29 @@
-package mygame;
+package mygame.level;
 
 import java.awt.Canvas;
 import java.awt.Point;
+import java.util.HashSet;
 
 import gameframework.core.CanvasDefaultImpl;
 import gameframework.core.Game;
+import gameframework.core.GameEntity;
 import gameframework.core.GameLevelDefaultImpl;
-import gameframework.core.GameMovableDriverDefaultImpl;
 import gameframework.core.GameUniverseDefaultImpl;
 import gameframework.moves_rules.MoveBlockerChecker;
 import gameframework.moves_rules.MoveBlockerCheckerDefaultImpl;
-import gameframework.moves_rules.MoveStrategyKeyboard;
 import gameframework.moves_rules.OverlapProcessor;
 import gameframework.moves_rules.OverlapProcessorDefaultImpl;
-import pacman.entity.Pacman;
-import pacman.entity.Wall;
+import mygame.core.GameUniverseViewPort;
+import mygame.entity.Base;
+import mygame.entity.BlockerWall;
+import mygame.entity.Warrior;
+import mygame.moveRules.UnitMovableDriver;
 import pacman.rule.PacmanMoveBlockers;
 import pacman.rule.PacmanOverlapRules;
 
 public class GameLevelOne extends GameLevelDefaultImpl {
 	Canvas canvas;
 
-	// 0 : Pacgums; 1 : Walls; 2 : SuperPacgums; 3 : Doors; 4 : Jail; 5 : empty
 	// 0 : empty; 1 : NonMovable; 2: PlayerBase; 3: IABase
 	static int[][] tab = { 
 		  { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0 },
@@ -58,6 +60,9 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 
 	public static final int SPRITE_SIZE = 16;
 	
+	private HashSet<GameEntity> player_units;
+	private HashSet<GameEntity> enemy_units;
+	
 
 	@Override
 	protected void init() {
@@ -76,74 +81,36 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 		gameBoard = new GameUniverseViewPort(canvas, universe);
 		((CanvasDefaultImpl) canvas).setDrawingGameBoard(gameBoard);
 		
+		Base myBase = new Base();
+		Base advBase = new Base();
+		
+		player_units = new HashSet<GameEntity>();
+		enemy_units = new HashSet<GameEntity>();
+		
 		// Filling up the universe with basic non movable entities and inclusion in the universe
 		for (int i = 0; i < 31; ++i) {
 			for (int j = 0; j < 37; ++j) {
-//				if (tab[i][j] == 0) {
-//					universe.addGameEntity(new Pacgum(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
-//					totalNbGums++;
-//				}
 				if (tab[i][j] == 1) {
-					universe.addGameEntity(new Wall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+					universe.addGameEntity(new BlockerWall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+				}else if (tab[i][j] == 2) {
+					myBase.addCoordonate(new Point(i, j));
+				}else if (tab[i][j] == 3) {
+					advBase.addCoordonate(new Point(i, j));
 				}
-//				if (tab[i][j] == 2) {
-//					universe.addGameEntity(new SuperPacgum(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
-//					totalNbGums++;
-//				}
-//				if (tab[i][j] == 4) {
-//					universe.addGameEntity(new Jail(new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
-//				}
 			}
 		}
-		/*
-		overlapRules.setTotalNbGums(totalNbGums);
-
-		// Two teleport points definition and inclusion in the universe
-		// (west side to east side)
-		universe.addGameEntity(new TeleportPairOfPoints(new Point(0 * SPRITE_SIZE, 14 * SPRITE_SIZE), new Point(
-				25 * SPRITE_SIZE, 14 * SPRITE_SIZE)));
-		// (east side to west side)
-		universe.addGameEntity(new TeleportPairOfPoints(new Point(27 * SPRITE_SIZE, 14 * SPRITE_SIZE), new Point(
-				2 * SPRITE_SIZE, 14 * SPRITE_SIZE)));
+		universe.addGameEntity(myBase);
+		universe.addGameEntity(advBase);
 		
-		// Pacman definition and inclusion in the universe
-		Pacman myPac = new Pacman(canvas);
-		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
-		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();
-		pacDriver.setStrategy(keyStr);
-		pacDriver.setmoveBlockerChecker(moveBlockerChecker);
-		canvas.addKeyListener(keyStr);
-		myPac.setDriver(pacDriver);
-		myPac.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		universe.addGameEntity(myPac);
-		*/
 		
-		//Add warrior
-		Warrior w = new Warrior(canvas);
-		GameMovableDriverDefaultImpl wDriver = new GameMovableDriverDefaultImpl();
-		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();
-		wDriver.setStrategy(keyStr);
-		wDriver.setmoveBlockerChecker(moveBlockerChecker);
-		canvas.addKeyListener(keyStr);
-		w.setDriver(wDriver);
-		w.setPosition(new Point(13 * SPRITE_SIZE, 15 * SPRITE_SIZE));
-		universe.addGameEntity(w);
+		UnitMovableDriver xDriver = new UnitMovableDriver(player_units, myBase);
+		Warrior x = new Warrior(canvas);
+		xDriver.setmoveBlockerChecker(moveBlockerChecker);
+		x.setDriver(xDriver);
+		x.setPosition(new Point(20 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+		universe.addGameEntity(x);
+		enemy_units.add(x);
 
-		/*
-		// Ghosts definition and inclusion in the universe
-		Ghost myGhost;
-		for (int t = 0; t < NUMBER_OF_GHOSTS; ++t) {
-			GameMovableDriverDefaultImpl ghostDriv = new GhostMovableDriver();
-			MoveStrategyRandom ranStr = new MoveStrategyRandom();
-			ghostDriv.setStrategy(ranStr);
-			ghostDriv.setmoveBlockerChecker(moveBlockerChecker);
-			myGhost = new Ghost(canvas);
-			myGhost.setDriver(ghostDriv);
-			myGhost.setPosition(new Point(14 * SPRITE_SIZE, 15 * SPRITE_SIZE));
-			universe.addGameEntity(myGhost);
-			(overlapRules).addGhost(myGhost);
-		}
-		*/
 	}
 
 	public GameLevelOne(Game g) {
