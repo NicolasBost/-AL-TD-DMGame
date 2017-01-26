@@ -20,6 +20,7 @@ import mygame.entity.BlockerWall;
 import mygame.entity.Warrior;
 import mygame.entity.HorseMan;
 import mygame.rule.MoveStrategyPathFinding;
+import mygame.rule.MyGameOverlapRules;
 import mygame.rule.UnitMovableDriver;
 import pacman.entity.Wall;
 
@@ -75,14 +76,12 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
 		moveBlockerChecker.setMoveBlockerRules(new PacmanMoveBlockers());
-		
-		PacmanOverlapRules overlapRules = new PacmanOverlapRules(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE),
-				new Point(14 * SPRITE_SIZE, 15 * SPRITE_SIZE), life[0], score[0], endOfGame);
+		MyGameOverlapRules overlapRules = new MyGameOverlapRules(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE),
+				new Point(14 * SPRITE_SIZE, 15 * SPRITE_SIZE), life[0], endOfGame);
+		System.out.println("ici");
 		overlapProcessor.setOverlapRules(overlapRules);
-
 		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
 		overlapRules.setUniverse(universe);
-
 		gameBoard = new GameUniverseViewPort(canvas, universe);
 		((CanvasDefaultImpl) canvas).setDrawingGameBoard(gameBoard);
 		
@@ -91,7 +90,6 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 		
 		player_units = new HashSet<GameEntity>();
 		enemy_units = new HashSet<GameEntity>();
-		
 		// Filling up the universe with basic non movable entities and inclusion in the universe
 		for (int i = 0; i < 31; ++i) {
 			for (int j = 0; j < 37; ++j) {
