@@ -105,15 +105,26 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 		universe.addGameEntity(myBase);
 		universe.addGameEntity(advBase);
 				
-		UnitMovableDriver xDriver = new UnitMovableDriver(player_units, advBase, SPRITE_SIZE);
+		UnitMovableDriver xDriver = new UnitMovableDriver(player_units, myBase, SPRITE_SIZE);
 		Warrior x = new Warrior(canvas);
 		xDriver.setmoveBlockerChecker(moveBlockerChecker);
 		MoveStrategyPathFinding pathFinding = new MoveStrategyPathFinding(tab);
 		xDriver.setStrategy(pathFinding);
 		x.setDriver(xDriver);
-		x.setPosition(new Point(20 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+		x.setPosition(new Point(25 * SPRITE_SIZE, 15 * SPRITE_SIZE));
 		universe.addGameEntity(x);
 		enemy_units.add(x);
+		
+		
+		UnitMovableDriver yDriver = new UnitMovableDriver(enemy_units, advBase, SPRITE_SIZE);
+		Warrior y = new Warrior(canvas);
+		yDriver.setmoveBlockerChecker(moveBlockerChecker);
+		MoveStrategyPathFinding pathF = new MoveStrategyPathFinding(tab);
+		yDriver.setStrategy(pathF);
+		y.setDriver(yDriver);
+		y.setPosition(new Point(6 * SPRITE_SIZE, 12 * SPRITE_SIZE));
+		universe.addGameEntity(y);
+		player_units.add(y);
 
 	}
 
