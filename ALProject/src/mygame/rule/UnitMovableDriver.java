@@ -1,4 +1,4 @@
-package mygame.moveRules;
+package mygame.rule;
 
 import java.awt.Point;
 import java.util.Set;
@@ -16,20 +16,18 @@ public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 	private Set<GameEntity> units;
 	private Base targetBase;
 	private static int AGRO_DIST = 10;
+	int SPRITE_SIZE;
 
-	public UnitMovableDriver(Set<GameEntity> units, Base base) {
+	public UnitMovableDriver(Set<GameEntity> units, Base base, int spriteSize) {
 		this.units = units;
 		this.targetBase = base;
+		this.SPRITE_SIZE = spriteSize;
 	}
 
 	public SpeedVector getSpeedVector(Movable m) {
 		SpeedVector target_pos = null;
 		int speed = 1;
 		float minDist = AGRO_DIST;
-		int nbTries = 10;
-		while (true) {
-			nbTries--;
-			// Search near adverse
 			for (GameEntity unit : units) {
 				GameMovable obj = (GameMovable) unit;
 				float dist = (float) obj.getPosition().distance(m.getPosition());
@@ -41,27 +39,18 @@ public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 					}
 				}
 			}
-			if (target_pos != null) {
+			if(target_pos != null)
 				return target_pos;
-			} else {
-				// Go to adverse base
-				Point dir = getDirection(m.getPosition(), targetBase.getClosestPoint(m.getPosition()));
-				SpeedVector tmp_speed = new SpeedVectorDefaultImpl(dir, speed);
-				if (moveBlockerChecker.moveValidation(m, tmp_speed)) {
-					return tmp_speed;
-				}				
-				tmp_speed = new SpeedVectorDefaultImpl(new Point(0,dir.y), speed);
-				if (moveBlockerChecker.moveValidation(m, tmp_speed)) {
-					return tmp_speed;
-				}
-				tmp_speed = new SpeedVectorDefaultImpl(new Point(dir.x,0), speed);
-				if (moveBlockerChecker.moveValidation(m, tmp_speed)) {
-					return tmp_speed;
-				}
+			
+			MoveStrategyPathFinding pf = (MoveStrategyPathFinding) super.moveStrategy;
+			pf.setStartPoint(new Point(m.getPosition().x/SPRITE_SIZE, m.getPosition().y/SPRITE_SIZE));
+			pf.setEndPoint(targetBase.getClosestPoint(new Point(m.getPosition().x/SPRITE_SIZE, m.getPosition().y/SPRITE_SIZE)));
+			SpeedVector possibleSpeedVector = pf.getSpeedVector();
+			if (moveBlockerChecker.moveValidation(m, possibleSpeedVector)) {
+				return possibleSpeedVector;
 			}
-			if (nbTries < 1)
-				break;
-		}
+		
+			
 		return SpeedVectorDefaultImpl.createNullVector();
 
 	}
@@ -69,8 +58,16 @@ public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 	public Point getDirection(Point src, Point dir) {
 		int x = 0;
 		int y = 0;
-		x = (src.getX() - dir.getX() > 0) ? 1 : -1;
-		y = (src.getY() - dir.getY() > 0) ? 1 : -1;
+		if(src.getX() - dir.getX() > 0)
+			x = -1;
+		else if(src.getX() - dir.getX() < 0)
+			x = 1;
+		if(x!=0)
+			return new Point(x, y);
+		if(src.getY() - dir.getY() > 0)
+			y = -1;
+		else if(src.getY() - dir.getY() < 0)
+			y = 1;
 		return new Point(x, y);
 	}
 

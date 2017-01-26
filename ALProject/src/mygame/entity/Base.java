@@ -30,11 +30,13 @@ public class Base implements MoveBlocker, GameEntity {
 		Point closest = null;
 		float min_dist = Float.MAX_VALUE;
 		for(Point p : coordonates){
-			float dist = (float) p.distance(position);
+			float dist = (float) position.distance(p);
 			if(dist < min_dist){
 				closest = p;
 				min_dist = dist;
 			}
+			System.out.println(p);
+			System.out.println(dist);
 		}
 		return closest;
 	}
