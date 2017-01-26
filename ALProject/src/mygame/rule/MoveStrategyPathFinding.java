@@ -10,7 +10,7 @@ import gameframework.moves_rules.SpeedVectorDefaultImpl;
 
 public class MoveStrategyPathFinding implements MoveStrategy {
 
-	private static int[][] tab;
+	private int[][] tab;
 	private Node startNode;
 	private Node endNode;
 	private List<Node> openSet = new ArrayList<Node>();
@@ -25,30 +25,31 @@ public class MoveStrategyPathFinding implements MoveStrategy {
 	}
 
 	public MoveStrategyPathFinding(int[][] tab) {
-		MoveStrategyPathFinding.tab = tab;
+		this.tab = tab;
 	}
 
 	@Override
 	public SpeedVector getSpeedVector() {
+		openSet.clear();
+		closeSet.clear();
+		
 		Node[][] vals = new Node[tab.length][tab[0].length];
 		for (int i = 0; i < tab.length; i++)
 			for (int j = 0; j < tab[i].length; j++)
 				vals[i][j] = new Node(new Point(j, i));
-
 		openSet.add(startNode);
 		
 		while (!openSet.isEmpty()) {
 			int lowestIndex = 0;
-			for (int i = 0; i < openSet.size(); i++) {
-				if (openSet.get(i).F < openSet.get(lowestIndex).F) {
-					
+			for (int i = 0; i < openSet.size(); i++)
+				if (openSet.get(i).F < openSet.get(lowestIndex).F)
 					lowestIndex = i;
-				}
-			}
+			
 			Node current = openSet.get(lowestIndex);
 			if (current.point.equals(endNode.point)) {
 				while(current.parent != null && !current.parent.point.equals(startNode.point))
 					current = current.parent;
+				System.out.println("Done");
 				return new SpeedVectorDefaultImpl(getDirection(startNode.point, current.point), 1);
 			}
 			openSet.remove(lowestIndex);
@@ -78,7 +79,6 @@ public class MoveStrategyPathFinding implements MoveStrategy {
 	}
 
 	private int heuristic(Point neightbor, Point end) {
-		//int d = (int) neightbor.point.distance(end.point);
 		int d = Math.abs(end.x-neightbor.x) + Math.abs(end.x-neightbor.y);
 		return d;
 	}
