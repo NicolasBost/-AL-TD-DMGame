@@ -11,6 +11,7 @@ import gameframework.core.GameLevelDefaultImpl;
 import gameframework.core.GameUniverseDefaultImpl;
 import gameframework.moves_rules.MoveBlockerChecker;
 import gameframework.moves_rules.MoveBlockerCheckerDefaultImpl;
+import gameframework.moves_rules.MoveStrategyKeyboard;
 import gameframework.moves_rules.OverlapProcessor;
 import gameframework.moves_rules.OverlapProcessorDefaultImpl;
 import mygame.core.GameUniverseViewPort;
@@ -18,7 +19,10 @@ import mygame.entity.Base;
 import mygame.entity.BlockerWall;
 import mygame.entity.Warrior;
 import mygame.entity.HorseMan;
-import mygame.moveRules.UnitMovableDriver;
+import mygame.rule.MoveStrategyPathFinding;
+import mygame.rule.UnitMovableDriver;
+import pacman.entity.Wall;
+
 import pacman.rule.PacmanMoveBlockers;
 import pacman.rule.PacmanOverlapRules;
 
@@ -50,7 +54,7 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 			{ 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 },
 			{ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 },
 			{ 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 3, 3, 0, 0, 0 },
-			{ 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 3, 3, 3, 0, 0, 0 },
+			{ 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 3, 3, 0, 0, 0 },
 			{ 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 3, 3, 3, 0, 0, 0 },
 			{ 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 3, 3, 3, 0, 1, 0 },
 			{ 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -94,19 +98,20 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 				if (tab[i][j] == 1) {
 					universe.addGameEntity(new BlockerWall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 				}else if (tab[i][j] == 2) {
-					myBase.addCoordonate(new Point(i, j));
+					myBase.addCoordonate(new Point(j, i));
 				}else if (tab[i][j] == 3) {
-					advBase.addCoordonate(new Point(i, j));
+					advBase.addCoordonate(new Point(j, i));
 				}
 			}
 		}
 		universe.addGameEntity(myBase);
 		universe.addGameEntity(advBase);
 		
-		
-		UnitMovableDriver xDriver = new UnitMovableDriver(player_units, myBase);
-		HorseMan x = new HorseMan(canvas);
+		UnitMovableDriver xDriver = new UnitMovableDriver(player_units, advBase, SPRITE_SIZE);
+		Warrior x = new Warrior(canvas);
 		xDriver.setmoveBlockerChecker(moveBlockerChecker);
+		MoveStrategyPathFinding pathFinding = new MoveStrategyPathFinding(tab);
+		xDriver.setStrategy(pathFinding);
 		x.setDriver(xDriver);
 		x.setPosition(new Point(20 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 		universe.addGameEntity(x);
@@ -118,5 +123,7 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 		super(g);
 		canvas = g.getCanvas();
 	}
+	
+	
 
 }
