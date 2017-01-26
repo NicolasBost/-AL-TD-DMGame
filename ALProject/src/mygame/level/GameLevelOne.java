@@ -2,6 +2,7 @@ package mygame.level;
 
 import java.awt.Canvas;
 import java.awt.Point;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import gameframework.core.CanvasDefaultImpl;
@@ -9,10 +10,12 @@ import gameframework.core.Game;
 import gameframework.core.GameEntity;
 import gameframework.core.GameLevelDefaultImpl;
 import gameframework.core.GameUniverseDefaultImpl;
+import gameframework.core.ObservableValue;
 import gameframework.moves_rules.MoveBlockerChecker;
 import gameframework.moves_rules.MoveBlockerCheckerDefaultImpl;
 import gameframework.moves_rules.OverlapProcessor;
 import gameframework.moves_rules.OverlapProcessorDefaultImpl;
+import mygame.BasicGame;
 import mygame.core.GameUniverseViewPort;
 import mygame.entity.Base;
 import mygame.entity.Warrior;
@@ -26,6 +29,9 @@ import pacman.rule.PacmanOverlapRules;
 
 public class GameLevelOne extends GameLevelDefaultImpl {
 	Canvas canvas;
+	private static final int NB_WARRIORS = 8;
+	private static final int NB_HORSEMEN = 3;
+	protected ObservableValue<HashMap<String, Integer>> playerAvailableUnits;
 
 	// 0 : empty; 1 : NonMovable; 2: PlayerBase; 3: IABase
 	static int[][] tab = { 
@@ -69,6 +75,12 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 
 	@Override
 	protected void init() {
+		HashMap<String,Integer> count_units = new HashMap<>();
+		count_units.put("warrior", NB_WARRIORS);
+		count_units.put("horsemen", NB_HORSEMEN);
+		playerAvailableUnits = new ObservableValue<HashMap<String,Integer>>(count_units);
+		playerAvailableUnits.addObserver(((BasicGame)g).o);
+		playerAvailableUnits.notify();
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();

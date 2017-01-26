@@ -8,6 +8,7 @@ import gameframework.core.Movable;
 import gameframework.core.ObservableValue;
 import gameframework.moves_rules.Overlap;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
+import mygame.entity.SoldierEntity;
 
 public class MyGameOverlapRules extends OverlapRulesApplierDefaultImpl {
 	protected GameUniverse universe;
@@ -30,8 +31,16 @@ public class MyGameOverlapRules extends OverlapRulesApplierDefaultImpl {
 	public void applyOverlapRules(Vector<Overlap> overlappables){
 		super.applyOverlapRules(overlappables);
 	}
-	public void overlapRule(Movable e1, Movable e2) {
-		//todo fight
+	public void overlapRule(SoldierEntity e1, SoldierEntity e2) {
+		float st;
+		st = e1.getUnit().strike();
+		e2.getUnit().parry(st);
+		st=e2.getUnit().strike();
+		e1.getUnit().parry(st);
+		if(!e1.getUnit().alive())
+			universe.removeGameEntity(e1);
+		if(!e2.getUnit().alive())
+			universe.removeGameEntity(e2);
 	}
 	
 }
