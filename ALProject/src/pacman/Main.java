@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Main {
 	public static void main(String[] args) {
-		BasicGame g = new BasicGame();
+		GameDefaultImpl g = new GameDefaultImpl();
 		ArrayList<GameLevel> levels = new ArrayList<>();
 
 		levels.add(new GameLevelOne(g)); // only one level is available

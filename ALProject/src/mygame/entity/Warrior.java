@@ -25,7 +25,7 @@ public class Warrior extends GameMovable implements Drawable, GameEntity, Overla
 				//
 				"right", "left", "up",
 				"down",//
-				"unused", "static", "unused");
+				"static");
 	}
 	
 	@Override

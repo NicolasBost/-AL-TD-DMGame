@@ -23,9 +23,9 @@ public class HorseMan extends GameMovable implements Drawable, GameEntity, Overl
 				defaultCanvas, RENDERING_SIZE, 4); //source, defautCanvas, | , nbSpriteParLigne
 		spriteManager.setTypes(
 				//
-				"right", "left", "up",
+				"left", "right", "up",
 				"down",//
-				"unused", "static", "unused");
+				"static");
 	}
 	
 	@Override

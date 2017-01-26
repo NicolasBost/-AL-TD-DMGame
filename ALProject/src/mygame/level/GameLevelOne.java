@@ -17,6 +17,7 @@ import mygame.core.GameUniverseViewPort;
 import mygame.entity.Base;
 import mygame.entity.BlockerWall;
 import mygame.entity.Warrior;
+import mygame.entity.HorseMan;
 import mygame.moveRules.UnitMovableDriver;
 import pacman.rule.PacmanMoveBlockers;
 import pacman.rule.PacmanOverlapRules;
@@ -104,7 +105,7 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 		
 		
 		UnitMovableDriver xDriver = new UnitMovableDriver(player_units, myBase);
-		Warrior x = new Warrior(canvas);
+		HorseMan x = new HorseMan(canvas);
 		xDriver.setmoveBlockerChecker(moveBlockerChecker);
 		x.setDriver(xDriver);
 		x.setPosition(new Point(20 * SPRITE_SIZE, 17 * SPRITE_SIZE));
