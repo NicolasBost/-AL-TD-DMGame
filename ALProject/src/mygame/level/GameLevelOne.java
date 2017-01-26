@@ -15,11 +15,10 @@ import gameframework.moves_rules.OverlapProcessor;
 import gameframework.moves_rules.OverlapProcessorDefaultImpl;
 import mygame.core.GameUniverseViewPort;
 import mygame.entity.Base;
+import mygame.entity.BlockerWall;
 import mygame.entity.Warrior;
 import mygame.rule.MoveStrategyPathFinding;
 import mygame.rule.UnitMovableDriver;
-import pacman.entity.Pacgum;
-import pacman.entity.Wall;
 import pacman.rule.PacmanMoveBlockers;
 import pacman.rule.PacmanOverlapRules;
 
@@ -92,9 +91,9 @@ public class GameLevelOne extends GameLevelDefaultImpl {
 		// Filling up the universe with basic non movable entities and inclusion in the universe
 		for (int i = 0; i < 31; ++i) {
 			for (int j = 0; j < 37; ++j) {
-				universe.addGameEntity(new Pacgum(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
+				//universe.addGameEntity(new Pacgum(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 				if (tab[i][j] == 1) {
-					universe.addGameEntity(new Wall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+					universe.addGameEntity(new BlockerWall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 				}else if (tab[i][j] == 2) {
 					myBase.addCoordonate(new Point(j, i));
 				}else if (tab[i][j] == 3) {
