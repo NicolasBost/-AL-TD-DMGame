@@ -11,13 +11,20 @@ import gameframework.core.GameMovable;
 import gameframework.core.Overlappable;
 import gameframework.core.SpriteManager;
 import gameframework.core.SpriteManagerDefaultImpl;
+import soldier.core.Unit;
+import soldier.units.UnitCenturion;
 
-public class Warrior extends GameMovable implements Drawable, GameEntity, Overlappable {
+public class Warrior extends GameMovable implements Drawable, GameEntity, Overlappable, SoldierEntity {
 
 	protected final SpriteManager spriteManager;
 	public static final int RENDERING_SIZE = 16; //taille finale
 	protected boolean movable = true;
+	protected UnitCenturion unit;
 	
+	public Unit getUnit() {
+		return unit;
+	}
+
 	public Warrior(Canvas defaultCanvas) {
 		spriteManager = new SpriteManagerDefaultImpl("images/warrior.png",
 				defaultCanvas, RENDERING_SIZE, 5); //source, defautCanvas, | , nbSpriteParLigne
@@ -26,6 +33,7 @@ public class Warrior extends GameMovable implements Drawable, GameEntity, Overla
 				"right", "left", "up",
 				"down",//
 				"static");
+		unit = new UnitCenturion("jojo");
 	}
 	
 	@Override

@@ -11,12 +11,15 @@ import gameframework.core.GameMovable;
 import gameframework.core.Overlappable;
 import gameframework.core.SpriteManager;
 import gameframework.core.SpriteManagerDefaultImpl;
+import soldier.core.Unit;
+import soldier.units.UnitHorseMan;
 
-public class HorseMan extends GameMovable implements Drawable, GameEntity, Overlappable {
+public class HorseMan extends GameMovable implements Drawable, GameEntity, Overlappable, SoldierEntity {
 
 	protected final SpriteManager spriteManager;
 	public static final int RENDERING_SIZE = 16; //taille finale
 	protected boolean movable = true;
+	private UnitHorseMan unit; 
 	
 	public HorseMan(Canvas defaultCanvas) {
 		spriteManager = new SpriteManagerDefaultImpl("images/horseman.png",
@@ -26,6 +29,7 @@ public class HorseMan extends GameMovable implements Drawable, GameEntity, Overl
 				"left", "right", "up",
 				"down",//
 				"static");
+		unit = new UnitHorseMan("paul labile pogba");
 	}
 	
 	@Override
@@ -62,6 +66,11 @@ public class HorseMan extends GameMovable implements Drawable, GameEntity, Overl
 		if (movable) {
 			spriteManager.increment();
 		}
+	}
+
+	@Override
+	public Unit getUnit() {
+		return unit;
 	}
 
 }
