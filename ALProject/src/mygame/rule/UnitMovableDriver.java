@@ -15,7 +15,7 @@ public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 
 	private Set<GameEntity> units;
 	private Base targetBase;
-	private static int AGRO_DIST = 10;
+	private static int AGRO_DIST = 5;
 	int SPRITE_SIZE;
 
 	public UnitMovableDriver(Set<GameEntity> units, Base base, int spriteSize) {
@@ -25,50 +25,43 @@ public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 	}
 
 	public SpeedVector getSpeedVector(Movable m) {
+		// If is in mouvment => keep the same direction
+		if(m.getPosition().x % SPRITE_SIZE != 0 || m.getPosition().y % SPRITE_SIZE != 0)
+				return m.getSpeedVector();
+					
 		SpeedVector target_pos = null;
-		int speed = 1;
+		MoveStrategyPathFinding pf = (MoveStrategyPathFinding) super.moveStrategy;
+		pf.setStartPoint(new Point(m.getPosition().x / SPRITE_SIZE, m.getPosition().y / SPRITE_SIZE));
+		SpeedVector possibleSpeedVector;
+
+		//int speed = 1;
+
 		float minDist = AGRO_DIST;
-			for (GameEntity unit : units) {
-				GameMovable obj = (GameMovable) unit;
-				float dist = (float) obj.getPosition().distance(m.getPosition());
-				if (dist < minDist) {
-					SpeedVector tmp_speed = new SpeedVectorDefaultImpl(getDirection(m.getPosition(), obj.getPosition()), speed);
-					if (moveBlockerChecker.moveValidation(m, tmp_speed)) {
-						minDist = dist;
-						target_pos = tmp_speed;
-					}
+		for (GameEntity unit : units) {
+			System.out.println("checking enemies");
+			GameMovable obj = (GameMovable) unit;
+			float dist = (float) obj.getPosition().distance(m.getPosition())/SPRITE_SIZE;
+			System.out.println(dist);
+			if (dist < minDist) {
+				pf.setEndPoint(new Point(obj.getPosition().x/SPRITE_SIZE, obj.getPosition().y/SPRITE_SIZE));
+				possibleSpeedVector = pf.getSpeedVector();
+				possibleSpeedVector.setSpeed(4);
+				if (moveBlockerChecker.moveValidation(m, possibleSpeedVector)) {
+					minDist = dist;
+					target_pos = possibleSpeedVector;
 				}
 			}
-			if(target_pos != null)
-				return target_pos;
-			
-			MoveStrategyPathFinding pf = (MoveStrategyPathFinding) super.moveStrategy;
-			pf.setStartPoint(new Point(m.getPosition().x/SPRITE_SIZE, m.getPosition().y/SPRITE_SIZE));
-			pf.setEndPoint(targetBase.getClosestPoint(new Point(m.getPosition().x/SPRITE_SIZE, m.getPosition().y/SPRITE_SIZE)));
-			SpeedVector possibleSpeedVector = pf.getSpeedVector();
-			if (moveBlockerChecker.moveValidation(m, possibleSpeedVector)) {
-				return possibleSpeedVector;
-			}
+		}
+		if (target_pos != null)
+			return target_pos;
+		pf.setEndPoint(targetBase.getClosestPoint(new Point(m.getPosition().x / SPRITE_SIZE, m.getPosition().y / SPRITE_SIZE)));
+		possibleSpeedVector = pf.getSpeedVector();
+		possibleSpeedVector.setSpeed(4);
+		if (moveBlockerChecker.moveValidation(m, possibleSpeedVector)) {
+			return possibleSpeedVector;
+		}
 		
-			
 		return SpeedVectorDefaultImpl.createNullVector();
-
-	}
-
-	public Point getDirection(Point src, Point dir) {
-		int x = 0;
-		int y = 0;
-		if(src.getX() - dir.getX() > 0)
-			x = -1;
-		else if(src.getX() - dir.getX() < 0)
-			x = 1;
-		if(x!=0)
-			return new Point(x, y);
-		if(src.getY() - dir.getY() > 0)
-			y = -1;
-		else if(src.getY() - dir.getY() < 0)
-			y = 1;
-		return new Point(x, y);
 	}
 
 }

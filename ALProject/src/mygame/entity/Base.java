@@ -35,8 +35,6 @@ public class Base implements MoveBlocker, GameEntity {
 				closest = p;
 				min_dist = dist;
 			}
-			System.out.println(p);
-			System.out.println(dist);
 		}
 		return closest;
 	}
