@@ -48,6 +48,8 @@ public class MyGameOverlapRules extends OverlapRulesApplierDefaultImpl {
 	
 	
 	public void fight(SoldierEntity e1, SoldierEntity e2) {
+		if(e1.isFriend() == e2.isFriend())
+			return;
 		float st;
 		st = e1.getUnit().strike();
 		e2.getUnit().parry(st);

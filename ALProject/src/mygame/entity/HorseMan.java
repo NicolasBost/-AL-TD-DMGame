@@ -21,8 +21,9 @@ public class HorseMan extends GameMovable implements Drawable, GameEntity, Overl
 	public static final int SPEED = 4;
 	protected boolean movable = true;
 	private UnitHorseMan unit; 
+	protected boolean isFriend;
 	
-	public HorseMan(Canvas defaultCanvas) {
+	public HorseMan(Canvas defaultCanvas, boolean isFriend) {
 		spriteManager = new SpriteManagerDefaultImpl("images/horseman.png",
 				defaultCanvas, RENDERING_SIZE, 4); //source, defautCanvas, | , nbSpriteParLigne
 		spriteManager.setTypes(
@@ -31,6 +32,7 @@ public class HorseMan extends GameMovable implements Drawable, GameEntity, Overl
 				"down",//
 				"static");
 		unit = new UnitHorseMan("paul labile pogba");
+		this.isFriend = isFriend;
 	}
 	
 	@Override
@@ -77,6 +79,11 @@ public class HorseMan extends GameMovable implements Drawable, GameEntity, Overl
 	@Override
 	public int getSpeed() {
 		return SPEED;
+	}
+
+	@Override
+	public boolean isFriend() {
+		return isFriend;
 	}
 
 }
