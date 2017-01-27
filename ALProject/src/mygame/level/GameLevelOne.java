@@ -24,7 +24,6 @@ import mygame.rule.MoveStrategyPathFinding;
 import mygame.rule.MyGameOverlapRules;
 import mygame.rule.UnitMovableDriver;
 import pacman.rule.PacmanMoveBlockers;
-import pacman.rule.PacmanOverlapRules;
 
 public class GameLevelOne extends GameLevelDefaultImpl {
 	Canvas canvas;
