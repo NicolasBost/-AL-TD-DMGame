@@ -21,12 +21,13 @@ public class Warrior extends GameMovable implements Drawable, GameEntity, Overla
 	public static final int SPEED = 2;
 	protected boolean movable = true;
 	protected UnitCenturion unit;
+	protected boolean isFriend;
 	
 	public Unit getUnit() {
 		return unit;
 	}
 
-	public Warrior(Canvas defaultCanvas) {
+	public Warrior(Canvas defaultCanvas, boolean isFriend) {
 		spriteManager = new SpriteManagerDefaultImpl("images/warrior.png",
 				defaultCanvas, RENDERING_SIZE, 5); //source, defautCanvas, | , nbSpriteParLigne
 		spriteManager.setTypes(
@@ -35,6 +36,7 @@ public class Warrior extends GameMovable implements Drawable, GameEntity, Overla
 				"down",//
 				"static");
 		unit = new UnitCenturion("jojo");
+		this.isFriend = isFriend;
 	}
 	
 	@Override
@@ -76,6 +78,11 @@ public class Warrior extends GameMovable implements Drawable, GameEntity, Overla
 	@Override
 	public int getSpeed() {
 		return SPEED;
+	}
+
+	@Override
+	public boolean isFriend() {
+		return isFriend;
 	}
 
 }

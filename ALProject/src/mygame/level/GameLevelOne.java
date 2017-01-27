@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import gameframework.core.CanvasDefaultImpl;
+import gameframework.core.GameMovable;
 import gameframework.core.GameUniverseDefaultImpl;
 import gameframework.core.ObservableValue;
 import gameframework.moves_rules.MoveBlockerChecker;
@@ -111,7 +112,7 @@ public class GameLevelOne extends MyGameLevel {
 		universe.addGameEntity(advBase);
 		
 		//sending control with keyboard
-		SendingController sendCtrl = new SendingController();
+		SendingController sendCtrl = new SendingController(this);
 		canvas.addKeyListener(sendCtrl);
 		
 		//setUnit
@@ -124,7 +125,7 @@ public class GameLevelOne extends MyGameLevel {
 		//playerAvailableUnits.notify();
 		
 		UnitMovableDriver xDriver = new UnitMovableDriver(player_units, myBase, SPRITE_SIZE);
-		HorseMan x = new HorseMan(canvas);
+		HorseMan x = new HorseMan(canvas, false);
 		xDriver.setmoveBlockerChecker(moveBlockerChecker);
 		MoveStrategyPathFinding pathFinding = new MoveStrategyPathFinding(tab);
 		xDriver.setStrategy(pathFinding);
@@ -134,15 +135,13 @@ public class GameLevelOne extends MyGameLevel {
 		enemy_units.add(x);
 		
 		
-		UnitMovableDriver yDriver = new UnitMovableDriver(enemy_units, advBase, SPRITE_SIZE);
-		Warrior y = new Warrior(canvas);
-		yDriver.setmoveBlockerChecker(moveBlockerChecker);
-		MoveStrategyPathFinding pathF = new MoveStrategyPathFinding(tab);
-		yDriver.setStrategy(pathF);
-		y.setDriver(yDriver);
-		y.setPosition(new Point(6 * SPRITE_SIZE, 12 * SPRITE_SIZE));
-		universe.addGameEntity(y);
-		player_units.add(y);
+		HorseMan v = new HorseMan(canvas, false);
+		v.setDriver(xDriver);
+		v.setPosition(new Point(33 * SPRITE_SIZE, 20 * SPRITE_SIZE));
+		universe.addGameEntity(v);
+		enemy_units.add(v);
+		
+	
 
 	}
 
@@ -154,5 +153,42 @@ public class GameLevelOne extends MyGameLevel {
 		init_unit.put("horseman", NB_HORSEMEN);
 		playerAvailableUnits = new ObservableValue<HashMap<String,Integer>>(init_unit);
 		playerAvailableUnits.addObserver(g);
+	}
+
+	public void invokeEntity(String type) {
+		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
+		UnitMovableDriver wDriver = new UnitMovableDriver(enemy_units, advBase, SPRITE_SIZE);
+		MoveStrategyPathFinding pathFinding = new MoveStrategyPathFinding(tab);
+		GameMovable w = null;
+		switch(type){
+			case "warrior":
+					HashMap<String, Integer> nbUnits = playerAvailableUnits.getValue();
+					if(playerAvailableUnits.getValue().get("warrior") > 0){
+						w = new Warrior(canvas, true);
+						playerAvailableUnits.getValue().put("warrior", playerAvailableUnits.getValue().get("warrior")-1);
+					}
+						
+					
+				break;
+			case "horseman":
+				if(playerAvailableUnits.getValue().get("horseman") > 0){
+					w = new HorseMan(canvas, true);
+					playerAvailableUnits.getValue().put("horseman", playerAvailableUnits.getValue().get("horseman")-1);
+				}
+					
+				break;
+		}
+		if(w == null)
+			return;
+		wDriver.setmoveBlockerChecker(moveBlockerChecker);
+		
+		wDriver.setStrategy(pathFinding);
+		w.setDriver(wDriver);
+		Point p = myBase.getSpawnablePoint();
+		w.setPosition(new Point(p.x * SPRITE_SIZE, p.y * SPRITE_SIZE));
+		SoldierEntity s = (SoldierEntity) w;
+		universe.addGameEntity(s);
+		player_units.add(s);
+		
 	}
 }

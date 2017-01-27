@@ -3,21 +3,22 @@ package mygame.core;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import mygame.level.GameLevelOne;
+
 public class SendingController implements KeyListener {
 
-	
-	public SendingController() {
+	GameLevelOne g;
+	public SendingController(GameLevelOne game) {
 		super();
+		this.g = game;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		if(arg0.getKeyCode()==KeyEvent.VK_NUMPAD1)
-			//sendWarrior();
-			System.out.println("send warrior");
-		if(arg0.getKeyCode()==KeyEvent.VK_NUMPAD2)
-			//sendHorseMan();
-			System.out.println("send horseman");
+		if(arg0.getKeyCode()==KeyEvent.VK_1)
+			g.invokeEntity("warrior");
+		if(arg0.getKeyCode()==KeyEvent.VK_2)
+			g.invokeEntity("horseman");
 	}
 
 	@Override
