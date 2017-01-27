@@ -9,7 +9,6 @@ import java.awt.Label;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,18 +17,15 @@ import javax.swing.JPanel;
 import gameframework.core.CanvasDefaultImpl;
 import gameframework.core.Game;
 import gameframework.core.GameLevel;
-import gameframework.core.GameLevelDefaultImpl;
 import gameframework.core.ObservableValue;
+import mygame.level.MyGameLevel;
 
 public class BasicGame implements Game, Observer {
 	protected static final int NB_ROWS = 31;
 	protected static final int NB_COLUMNS = 37;
 	protected static final int SPRITE_SIZE = 16;
 	public static final int NUMBER_OF_PLAYER = 2;
-	public Observer o;
-	protected HashMap<String, Integer> playerAvailableUnits;
-	protected HashMap<String, Integer> IAAvailableUnits;
-
+	
 	protected CanvasDefaultImpl defaultCanvas = null;
 	protected ObservableValue<Integer> life[] = new ObservableValue[NUMBER_OF_PLAYER];
 
@@ -38,7 +34,7 @@ public class BasicGame implements Game, Observer {
 
 	private Frame f;
 
-	private GameLevelDefaultImpl currentPlayedLevel = null;
+	private MyGameLevel currentPlayedLevel = null;
 	protected int levelNumber;
 	protected ArrayList<GameLevel> gameLevels;
 
@@ -69,7 +65,7 @@ public class BasicGame implements Game, Observer {
 	
 	@Override
 	public void createGUI() {
-		f = new Frame("Fire Emblem Clash");
+		f = new Frame("Water Emblem Clash");
 		f.dispose();
 
 		Container topBar = createStatusBar();
@@ -109,8 +105,9 @@ public class BasicGame implements Game, Observer {
 		JPanel c = new JPanel();
 		GridBagLayout layout = new GridBagLayout();
 		c.setLayout(layout);
-		//warriorValue = new Label(Integer.toString(playerAvailableUnits.getValue().get("warrior")));
-		//horseManValue = new Label(Integer.toString(playerAvailableUnits.getValue().get("horseman")));
+		//System.out.println(Integer.toString(currentPlayedLevel.playerAvailableUnits.getValue().get("warrior")));
+		warriorValue = new Label("0");
+		horseManValue = new Label("0");
 		c.add(instructionsText);
 		c.add(warriorText);
 		//c.add(warriorValue);
@@ -133,11 +130,11 @@ public class BasicGame implements Game, Observer {
 			endOfGame = new ObservableValue<Boolean>(false);
 			endOfGame.addObserver(this);
 			try {
-				if (currentPlayedLevel != null && currentPlayedLevel.isAlive()) {
+				if (currentPlayedLevel != null && currentPlayedLevel.isAlive()) { //placer la condition d'arret ici ?
 					currentPlayedLevel.interrupt();
 					currentPlayedLevel = null;
 				}
-				currentPlayedLevel = (GameLevelDefaultImpl) level;
+				currentPlayedLevel = (MyGameLevel) level;
 				levelNumber++;
 				currentLevelValue.setText(Integer.toString(levelNumber));
 				currentPlayedLevel.start();
@@ -159,24 +156,27 @@ public class BasicGame implements Game, Observer {
 	public void update(Observable o, Object arg) {
 		if (o == endOfGame) {
 			if (endOfGame.getValue()) {
-				//informationValue.setText("You win");
 				currentPlayedLevel.interrupt();
 				currentPlayedLevel.end();
 			}
-		} else {
+		} 
+		/*if (o==currentPlayedLevel.playerAvailableUnits){
+			warriorValue.setText(Integer.toString(currentPlayedLevel.playerAvailableUnits.getValue().get("warrior")));
+			horseManValue.setText(Integer.toString(currentPlayedLevel.playerAvailableUnits.getValue().get("horseman")));
+		}*/
+	}
+		/*else {
 			for (ObservableValue<Integer> lifeObservable : life) {
 				if (o == lifeObservable) {
 					int lives = ((ObservableValue<Integer>) o).getValue();
 					lifeValue.setText(Integer.toString(lives));
 					if (lives == 0) {
-						//informationValue.setText("Defeat");
 						currentPlayedLevel.interrupt();
 						currentPlayedLevel.end();
 					}
 				}
 			}
-		}
-	}
+		}*/
 
 	@Override
 	public void restore() {
