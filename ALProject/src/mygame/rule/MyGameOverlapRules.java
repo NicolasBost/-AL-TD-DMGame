@@ -8,6 +8,7 @@ import gameframework.core.Movable;
 import gameframework.core.ObservableValue;
 import gameframework.moves_rules.Overlap;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
+import mygame.entity.Base;
 import mygame.entity.HorseMan;
 import mygame.entity.SoldierEntity;
 import mygame.entity.Warrior;
