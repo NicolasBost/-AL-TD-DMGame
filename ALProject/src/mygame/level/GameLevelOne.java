@@ -18,6 +18,7 @@ import mygame.core.GameUniverseViewPort;
 import mygame.core.SendingController;
 import mygame.entity.Base;
 import mygame.entity.BlockerWall;
+import mygame.entity.HorseMan;
 import mygame.entity.SoldierEntity;
 import mygame.entity.Warrior;
 import mygame.rule.MoveStrategyPathFinding;
@@ -123,7 +124,7 @@ public class GameLevelOne extends MyGameLevel {
 		//playerAvailableUnits.notify();
 		
 		UnitMovableDriver xDriver = new UnitMovableDriver(player_units, myBase, SPRITE_SIZE);
-		Warrior x = new Warrior(canvas);
+		HorseMan x = new HorseMan(canvas);
 		xDriver.setmoveBlockerChecker(moveBlockerChecker);
 		MoveStrategyPathFinding pathFinding = new MoveStrategyPathFinding(tab);
 		xDriver.setStrategy(pathFinding);
@@ -148,6 +149,10 @@ public class GameLevelOne extends MyGameLevel {
 	public GameLevelOne(BasicGame g) {
 		super(g);
 		canvas = g.getCanvas();
-		//playerAvailableUnits.addObserver(g);
+		HashMap<String,Integer> init_unit = new HashMap<String,Integer>();
+		init_unit.put("warrior", NB_WARRIORS);
+		init_unit.put("horseman", NB_HORSEMEN);
+		playerAvailableUnits = new ObservableValue<HashMap<String,Integer>>(init_unit);
+		playerAvailableUnits.addObserver(g);
 	}
 }

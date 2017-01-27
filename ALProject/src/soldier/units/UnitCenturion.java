@@ -1,6 +1,6 @@
 /**
  * D. Auber & P. Narbel
- * Solution TD Architecture Logicielle 2016 Université Bordeaux.
+ * Solution TD Architecture Logicielle 2016 Universitï¿½ Bordeaux.
  */
 package soldier.units;
 
@@ -12,7 +12,7 @@ import soldier.core.Weapon;
 public class UnitCenturion extends UnitInfantry {
 
 	public UnitCenturion(String soldierName) {
-		super(soldierName, new BehaviorSoldierStd(15, 100));
+		super(soldierName, new BehaviorSoldierStd(5, 2));
 	}
 
 	/**

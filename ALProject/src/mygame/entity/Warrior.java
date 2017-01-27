@@ -18,6 +18,7 @@ public class Warrior extends GameMovable implements Drawable, GameEntity, Overla
 
 	protected final SpriteManager spriteManager;
 	public static final int RENDERING_SIZE = 16; //taille finale
+	public static final int SPEED = 2;
 	protected boolean movable = true;
 	protected UnitCenturion unit;
 	
@@ -70,6 +71,11 @@ public class Warrior extends GameMovable implements Drawable, GameEntity, Overla
 		if (movable) {
 			spriteManager.increment();
 		}
+	}
+
+	@Override
+	public int getSpeed() {
+		return SPEED;
 	}
 
 }

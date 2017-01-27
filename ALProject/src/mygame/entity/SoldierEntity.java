@@ -5,4 +5,5 @@ import soldier.core.Unit;
 
 public interface SoldierEntity extends GameEntity{
 	Unit getUnit();
+	int getSpeed();
 }

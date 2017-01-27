@@ -18,6 +18,7 @@ public class HorseMan extends GameMovable implements Drawable, GameEntity, Overl
 
 	protected final SpriteManager spriteManager;
 	public static final int RENDERING_SIZE = 16; //taille finale
+	public static final int SPEED = 4;
 	protected boolean movable = true;
 	private UnitHorseMan unit; 
 	
@@ -71,6 +72,11 @@ public class HorseMan extends GameMovable implements Drawable, GameEntity, Overl
 	@Override
 	public Unit getUnit() {
 		return unit;
+	}
+
+	@Override
+	public int getSpeed() {
+		return SPEED;
 	}
 
 }

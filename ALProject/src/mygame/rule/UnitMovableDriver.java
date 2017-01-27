@@ -3,7 +3,6 @@ package mygame.rule;
 import java.awt.Point;
 import java.util.Set;
 
-import gameframework.core.GameEntity;
 import gameframework.core.GameMovable;
 import gameframework.core.GameMovableDriverDefaultImpl;
 import gameframework.core.Movable;
@@ -26,6 +25,7 @@ public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 	}
 
 	public SpeedVector getSpeedVector(Movable m) {
+		SoldierEntity s = (SoldierEntity) m;
 		// If is in mouvment => keep the same direction
 		if(m.getPosition().x % SPRITE_SIZE != 0 || m.getPosition().y % SPRITE_SIZE != 0)
 				return m.getSpeedVector();
@@ -45,7 +45,7 @@ public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 				if (dist < minDist) {
 					pf.setEndPoint(new Point(obj.getPosition().x/SPRITE_SIZE, obj.getPosition().y/SPRITE_SIZE));
 					possibleSpeedVector = pf.getSpeedVector();
-					possibleSpeedVector.setSpeed(4);
+					possibleSpeedVector.setSpeed(s.getSpeed());
 					if (moveBlockerChecker.moveValidation(m, possibleSpeedVector)) {
 						minDist = dist;
 						target_pos = possibleSpeedVector;
@@ -57,7 +57,7 @@ public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 			return target_pos;
 		pf.setEndPoint(targetBase.getClosestPoint(new Point(m.getPosition().x / SPRITE_SIZE, m.getPosition().y / SPRITE_SIZE)));
 		possibleSpeedVector = pf.getSpeedVector();
-		possibleSpeedVector.setSpeed(4);
+		possibleSpeedVector.setSpeed(s.getSpeed());
 		if (moveBlockerChecker.moveValidation(m, possibleSpeedVector)) {
 			return possibleSpeedVector;
 		}
