@@ -8,7 +8,9 @@ import gameframework.core.Movable;
 import gameframework.core.ObservableValue;
 import gameframework.moves_rules.Overlap;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
+import mygame.entity.HorseMan;
 import mygame.entity.SoldierEntity;
+import mygame.entity.Warrior;
 
 public class MyGameOverlapRules extends OverlapRulesApplierDefaultImpl {
 	protected GameUniverse universe;
@@ -22,16 +24,29 @@ public class MyGameOverlapRules extends OverlapRulesApplierDefaultImpl {
 		myBase = (Point) point.clone();
 		enemyBase = (Point) point2.clone();
 		this.life = life;
-		this.endOfGame = endOfGame;	}
+		this.endOfGame = endOfGame;	
+	}
 
 	public void setUniverse(GameUniverse universe) {
 		this.universe = universe;
 	}
+	
 	@Override
 	public void applyOverlapRules(Vector<Overlap> overlappables){
 		super.applyOverlapRules(overlappables);
 	}
-	public void overlapRule(SoldierEntity e1, SoldierEntity e2) {
+	public void overlapRule(Warrior e1, Warrior e2) {
+		fight(e1,e2);
+	}
+	public void overlapRule(Warrior e1, HorseMan e2) {
+		fight(e1,e2);
+	}
+	public void overlapRule(HorseMan e1, HorseMan e2) {
+		fight(e1,e2);
+	}
+	
+	
+	public void fight(SoldierEntity e1, SoldierEntity e2) {
 		float st;
 		st = e1.getUnit().strike();
 		e2.getUnit().parry(st);

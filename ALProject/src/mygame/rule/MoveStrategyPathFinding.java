@@ -49,7 +49,6 @@ public class MoveStrategyPathFinding implements MoveStrategy {
 			if (current.point.equals(endNode.point)) {
 				while(current.parent != null && !current.parent.point.equals(startNode.point))
 					current = current.parent;
-				System.out.println("Done");
 				return new SpeedVectorDefaultImpl(getDirection(startNode.point, current.point), 1);
 			}
 			openSet.remove(lowestIndex);
@@ -74,7 +73,6 @@ public class MoveStrategyPathFinding implements MoveStrategy {
 				}	
 			}
 		}
-		System.out.println("No solution");
 		return SpeedVectorDefaultImpl.createNullVector();
 	}
 

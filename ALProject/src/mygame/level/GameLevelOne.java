@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import gameframework.core.CanvasDefaultImpl;
-import gameframework.core.GameEntity;
 import gameframework.core.GameUniverseDefaultImpl;
 import gameframework.core.ObservableValue;
 import gameframework.moves_rules.MoveBlockerChecker;
@@ -19,11 +18,11 @@ import mygame.core.GameUniverseViewPort;
 import mygame.core.SendingController;
 import mygame.entity.Base;
 import mygame.entity.BlockerWall;
+import mygame.entity.SoldierEntity;
 import mygame.entity.Warrior;
 import mygame.rule.MoveStrategyPathFinding;
 import mygame.rule.MyGameOverlapRules;
 import mygame.rule.UnitMovableDriver;
-import pacman.rule.PacmanMoveBlockers;
 
 public class GameLevelOne extends MyGameLevel {
 	Canvas canvas;
@@ -66,8 +65,8 @@ public class GameLevelOne extends MyGameLevel {
 
 	public static final int SPRITE_SIZE = 16;
 	
-	private HashSet<GameEntity> player_units;
-	private HashSet<GameEntity> enemy_units;
+	private HashSet<SoldierEntity> player_units;
+	private HashSet<SoldierEntity> enemy_units;
 	
 	private Base myBase;
 	private Base advBase;
@@ -81,7 +80,6 @@ public class GameLevelOne extends MyGameLevel {
 		
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
-		moveBlockerChecker.setMoveBlockerRules(new PacmanMoveBlockers()); //inutile
 		OverlapRulesApplier overlapRules = new MyGameOverlapRules(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE),
 				new Point(14 * SPRITE_SIZE, 15 * SPRITE_SIZE), life[0], endOfGame);//a travailler les points
 		overlapProcessor.setOverlapRules(overlapRules);
@@ -122,7 +120,7 @@ public class GameLevelOne extends MyGameLevel {
 		playerAvailableUnits = new ObservableValue<HashMap<String,Integer>>(init_unit);
 		IAAvailableUnits = init_unit;
 		
-//		playerAvailableUnits.notify();
+		//playerAvailableUnits.notify();
 		
 		UnitMovableDriver xDriver = new UnitMovableDriver(player_units, myBase, SPRITE_SIZE);
 		Warrior x = new Warrior(canvas);

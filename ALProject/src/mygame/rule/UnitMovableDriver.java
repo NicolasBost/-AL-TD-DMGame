@@ -10,15 +10,16 @@ import gameframework.core.Movable;
 import gameframework.moves_rules.SpeedVector;
 import gameframework.moves_rules.SpeedVectorDefaultImpl;
 import mygame.entity.Base;
+import mygame.entity.SoldierEntity;
 
 public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 
-	private Set<GameEntity> units;
+	private Set<SoldierEntity> units;
 	private Base targetBase;
 	private static int AGRO_DIST = 5;
 	int SPRITE_SIZE;
 
-	public UnitMovableDriver(Set<GameEntity> units, Base base, int spriteSize) {
+	public UnitMovableDriver(Set<SoldierEntity> units, Base base, int spriteSize) {
 		this.units = units;
 		this.targetBase = base;
 		this.SPRITE_SIZE = spriteSize;
@@ -37,18 +38,18 @@ public class UnitMovableDriver extends GameMovableDriverDefaultImpl {
 		//int speed = 1;
 
 		float minDist = AGRO_DIST;
-		for (GameEntity unit : units) {
-			System.out.println("checking enemies");
-			GameMovable obj = (GameMovable) unit;
-			float dist = (float) obj.getPosition().distance(m.getPosition())/SPRITE_SIZE;
-			System.out.println(dist);
-			if (dist < minDist) {
-				pf.setEndPoint(new Point(obj.getPosition().x/SPRITE_SIZE, obj.getPosition().y/SPRITE_SIZE));
-				possibleSpeedVector = pf.getSpeedVector();
-				possibleSpeedVector.setSpeed(4);
-				if (moveBlockerChecker.moveValidation(m, possibleSpeedVector)) {
-					minDist = dist;
-					target_pos = possibleSpeedVector;
+		for (SoldierEntity unit : units) {
+			if(unit.getUnit().alive()){
+				GameMovable obj = (GameMovable) unit;
+				float dist = (float) obj.getPosition().distance(m.getPosition())/SPRITE_SIZE;
+				if (dist < minDist) {
+					pf.setEndPoint(new Point(obj.getPosition().x/SPRITE_SIZE, obj.getPosition().y/SPRITE_SIZE));
+					possibleSpeedVector = pf.getSpeedVector();
+					possibleSpeedVector.setSpeed(4);
+					if (moveBlockerChecker.moveValidation(m, possibleSpeedVector)) {
+						minDist = dist;
+						target_pos = possibleSpeedVector;
+					}
 				}
 			}
 		}
