@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gameframework.core.GameEntity;
-import gameframework.core.Overlappable;
 import gameframework.moves_rules.MoveBlocker;
 import soldier.core.Unit;
 import soldier.units.UnitBase;
-import soldier.units.UnitCenturion;
 
 public class Base implements MoveBlocker, GameEntity {
 
